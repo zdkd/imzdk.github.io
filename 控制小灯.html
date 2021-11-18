@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)https://newtool.github.io/test/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./控制小灯_files/jquery-3.6.0.min.js"></script>
+    <title>控制小灯</title>
+</head>
+
+<body>
+    <div>
+        <form>
+            请输入你的设备编号: <input type="text" id="topicid"><br>
+        </form>
+        <button class="on">开灯</button>
+        <button class="off">关灯</button>
+    </div>
+    <script>
+        var TopicId = "";
+        $(".off").click(function () {
+            TopicId = document.getElementById("topicid").value;
+            if (TopicId == "") {
+                alert("请输入设备编号！");
+            } else {
+                off("adminled" + TopicId, "47.95.12.58");
+            }
+        })
+        $(".on").click(function () {
+            TopicId = document.getElementById("topicid").value;
+            if (TopicId == "") {
+                alert("请输入设备编号！");
+            } else {
+                on("adminled" + TopicId, "47.95.12.58");
+            }
+        })
+        function on(led, ip) {
+            $.ajax({
+                type: "GET",
+                url: "http://kjjt.asia/mqttdk.php",
+                data: { "keyword": 1, "topic": led, "ip": ip },
+                dataType: "text",
+                success: function (data) {
+                    console.log("开灯"+data);
+
+                    // if (data == "") {
+                    //     alert("开灯成功！");
+                    // }
+                }
+            });
+        }
+        function off(led, ip) {
+            $.ajax({
+                type: "GET",
+                url: "http://kjjt.asia/mqttdk.php",
+                data: { "keyword": 0, "topic": led, "ip": ip },
+                dataType: "text",
+                success: function (data) {
+                    console.log("关灯"+data);
+                    // if (data == "") {
+                    //     alert("关灯成功！");
+                    // }
+                }
+            });
+
+        }
+    </script>
+
+
+
+</body></html>
